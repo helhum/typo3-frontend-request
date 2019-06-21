@@ -1,0 +1,27 @@
+{
+    "name": "helhum/typo3-frontend-request",
+    "description" : "API to execute TYPO3 frontend requests from code or command line",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": "^7.2",
+        "typo3/cms-core": "~9.5.0",
+        "symfony/process": "^4.0"
+    },
+    "suggest": {
+        "helhum/typo3-console": "For a cli interface"
+    },
+    "autoload": {
+        "psr-4": {
+            "Helhum\\Typo3FrontendRequest\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "typo3/cms": {
+            "app-dir": ".Build",
+            "web-dir": ".Build/public"
+        }
+    }
+}
