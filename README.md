@@ -8,7 +8,7 @@ Examples:
 
 ## Doing a TYPO3 frontend request
 ```php
-$request = new \TYPO3\CMS\Core\Http\ServerRequest($uri)
+$request = new \TYPO3\CMS\Core\Http\ServerRequest($uri);
 $client = new \Helhum\Typo3FrontendRequest\Typo3Client();
 try {
     $response = $client->send($request);
