@@ -6,7 +6,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\PhpProcess;
-use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -39,7 +39,6 @@ class Typo3Client
             'requestUrl' => (string)$request->getUri(),
             'headers' => $request->getHeaders(),
         ];
-        $response = new Response();
 
         $code = str_replace('\'{arguments}\'', var_export($arguments, true), $template);
         $process = new PhpProcess($code, null, null, 0);
@@ -55,7 +54,7 @@ class Typo3Client
         $body->write($process->getOutput());
         $body->rewind();
 
-        return $response->withBody($body);
+        return new HtmlResponse($body);
     }
 
     private function ensureAuthentication(RequestInterface $request): RequestInterface

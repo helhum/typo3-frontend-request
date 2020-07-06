@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -89,15 +88,14 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                 if ($subResponse->getStatusCode() >= 300) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $subResponse->getStatusCode(), 1544172839);
                 }
-                // create new response object and re-use only the body and the content-type of the sub-request
-                return new Response($subResponse->getBody(), $this->statusCode, [
-                    'Content-Type' => $subResponse->getHeader('Content-Type')
-                ]);
+                // create new response object and re-use only the body
+                return new HtmlResponse($subResponse->getBody(), $this->statusCode);
             }
             $content = 'The error page could not be resolved, as the error page itself is not accessible';
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
             $content = 'Invalid error handler configuration: ' . $this->errorHandlerConfiguration['errorContentSource'];
         }
+
         return new HtmlResponse($content, $this->statusCode);
     }
 
