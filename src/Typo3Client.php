@@ -39,9 +39,12 @@ class Typo3Client
             'requestUrl' => (string)$request->getUri(),
             'headers' => $request->getHeaders(),
         ];
-
+        $phpBinary = null;
+        if (getenv('PHP_BINARY')) {
+            $phpBinary = [getenv('PHP_BINARY')];
+        }
         $code = str_replace('\'{arguments}\'', var_export($arguments, true), $template);
-        $process = new PhpProcess($code, null, null, 0);
+        $process = new PhpProcess($code, null, null, 0, $phpBinary);
         try {
             $process->mustRun();
         } catch (ProcessFailedException $e) {
