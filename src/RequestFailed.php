@@ -13,11 +13,11 @@ class RequestFailed extends \Exception
     private $request;
 
     /**
-     * @var ResponseInterface
+     * @var ResponseInterface|null
      */
     private $response;
 
-    public function __construct(string $message, RequestInterface $request, ResponseInterface $response, \Throwable $previous = null)
+    public function __construct(string $message, RequestInterface $request, ?ResponseInterface $response, \Throwable $previous = null)
     {
         parent::__construct($message, 1552060849, $previous);
         $this->request = $request;
@@ -29,7 +29,7 @@ class RequestFailed extends \Exception
         return $this->request;
     }
 
-    public function getResponse(): ResponseInterface
+    public function getResponse(): ?ResponseInterface
     {
         return $this->response;
     }

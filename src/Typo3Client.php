@@ -21,12 +21,18 @@ class Typo3Client
     private $sessionId;
 
     /**
+     * @var string
+     */
+    private $phpBinary;
+
+    /**
      * @var SessionBackendInterface
      */
     private $sessionBackend;
 
-    public function __construct(SessionBackendInterface $sessionBackend = null)
+    public function __construct(string $phpBinary = null, SessionBackendInterface $sessionBackend = null)
     {
+        $this->phpBinary = $phpBinary ?? getenv('PHP_BINARY') ?: null;
         $this->sessionBackend = $sessionBackend ?? GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('FE');
     }
 
@@ -39,16 +45,12 @@ class Typo3Client
             'requestUrl' => (string)$request->getUri(),
             'headers' => $request->getHeaders(),
         ];
-        $phpBinary = null;
-        if (getenv('PHP_BINARY')) {
-            $phpBinary = [getenv('PHP_BINARY')];
-        }
         $code = str_replace('\'{arguments}\'', var_export($arguments, true), $template);
-        $process = new PhpProcess($code, null, null, 0, $phpBinary);
+        $process = new PhpProcess($code, null, null, 0, $this->phpBinary !== null ? [$this->phpBinary] : null);
         try {
             $process->mustRun();
         } catch (ProcessFailedException $e) {
-            throw new RequestFailed('Unable to process TYPO3 frontend request', $request, $response, $e);
+            throw new RequestFailed('Unable to process TYPO3 frontend request', $request, null, $e);
         } finally {
             $this->ensureSessionRemoved();
         }

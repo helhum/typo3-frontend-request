@@ -75,11 +75,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             $content = null;
             if ($resolvedUrl !== (string)$request->getUri()) {
                 $request = new ServerRequest($resolvedUrl);
-                $client = new Typo3Client();
-                if (!getenv('PHP_BINARY') && $this->errorHandlerConfiguration['phpBinary'] ?? null) {
-                    putenv('PHP_BINARY=' . $this->errorHandlerConfiguration['phpBinary']);
-                    $_ENV['PHP_BINARY'] = $_SERVER['PHP_BINARY'] = $this->errorHandlerConfiguration['phpBinary'];
-                }
+                $client = new Typo3Client($this->errorHandlerConfiguration['phpBinary'] ?? null);
                 try {
                     $subResponse = $client->send($request);
                 } catch (\Exception $e) {
