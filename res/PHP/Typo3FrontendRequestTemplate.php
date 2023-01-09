@@ -65,7 +65,10 @@ class Helhum_Typo3FrontendRequest_RequestBootstrap
         }
 
         $_SERVER['HTTP_USER_AGENT'] = 'TYPO3 Solr Request';
-        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = isset($requestUrlParts['host']) ? $requestUrlParts['host'] : 'localhost';
+        $hostName = isset($requestUrlParts['host']) ? $requestUrlParts['host'] : 'localhost';
+        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = $hostName;
+        putenv("HTTP_HOST=$hostName");
+        putenv("SERVER_NAME=$hostName");
         if (!empty($requestArguments['headers'])) {
             foreach ($requestArguments['headers'] as $name => $values) {
                 $_SERVER['HTTP_' . strtoupper(str_replace('-', '_', $name))] = implode(', ', $values);
