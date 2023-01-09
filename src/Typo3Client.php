@@ -6,6 +6,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\PhpProcess;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -41,7 +42,7 @@ class Typo3Client
         $request = $this->ensureAuthentication($request);
         $template = file_get_contents(__DIR__ . '/../res/PHP/Typo3FrontendRequestTemplate.php');
         $arguments = [
-            'documentRoot' => getenv('TYPO3_PATH_WEB') ?: rtrim('/', PATH_site),
+            'documentRoot' => getenv('TYPO3_PATH_WEB') ?: rtrim('/', Environment::getPublicPath()),
             'requestUrl' => (string)$request->getUri(),
             'headers' => $request->getHeaders(),
         ];
