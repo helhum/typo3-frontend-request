@@ -17,7 +17,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-latest": "1.x-dev"
+            "dev-main": "1.x-dev"
         },
         "typo3/cms": {
             "app-dir": ".Build",
