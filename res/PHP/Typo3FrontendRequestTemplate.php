@@ -64,8 +64,8 @@ class Helhum_Typo3FrontendRequest_RequestBootstrap
             }
         }
 
-        $_SERVER['HTTP_USER_AGENT'] = 'TYPO3 Solr Request';
-        $hostName = isset($requestUrlParts['host']) ? $requestUrlParts['host'] : 'localhost';
+        $_SERVER['HTTP_USER_AGENT'] = 'TYPO3 Cli Frontend Request';
+        $hostName = $requestUrlParts['host'] ?? 'localhost';
         $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'] = $hostName;
         putenv("HTTP_HOST=$hostName");
         putenv("SERVER_NAME=$hostName");
