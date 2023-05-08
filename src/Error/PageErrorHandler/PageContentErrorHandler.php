@@ -72,12 +72,11 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     {
         try {
             $resolvedUrl = $this->resolveUrl($request, $this->errorHandlerConfiguration['errorContentSource']);
-            $content = null;
             if ($resolvedUrl !== (string)$request->getUri()) {
-                $request = new ServerRequest($resolvedUrl);
+                $clientRequest = (new ServerRequest($resolvedUrl))->withHeader('X-TYPO3-ERROR-HANDLER', '1');
                 $client = new Typo3Client($this->errorHandlerConfiguration['phpBinary'] ?? null);
                 try {
-                    $subResponse = $client->send($request);
+                    $subResponse = $client->send($clientRequest);
                 } catch (\Exception $e) {
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", reason: ' . $e->getMessage(), 1544172838);
                 }
