@@ -4,8 +4,8 @@
     "license": "GPL-2.0-or-later",
     "require": {
         "php": ">=7.2",
-        "typo3/cms-core": "^10.4 || ^11.5",
-        "symfony/process": "^5.0 || ^6.0"
+        "typo3/cms-core": "^10.4 || ^11.5 || ^12.4",
+        "symfony/process": "^5.0 || ^6.0 || ^7.0"
     },
     "suggest": {
         "helhum/typo3-console": "For a cli interface"

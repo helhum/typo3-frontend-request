@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\PhpProcess;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -60,7 +61,7 @@ class Typo3Client
         $body->write($process->getOutput());
         $body->rewind();
 
-        return new HtmlResponse($body);
+        return new HtmlResponse((string)$body);
     }
 
     private function ensureAuthentication(RequestInterface $request): RequestInterface
@@ -68,7 +69,7 @@ class Typo3Client
         if (!$request->hasHeader('x-typo3-frontend-user')) {
             return $request;
         }
-        $this->sessionId = GeneralUtility::makeInstance(FrontendUserAuthentication::class)->createSessionId();
+        $this->sessionId = GeneralUtility::makeInstance(Random::class)->generateRandomHexString(32);
         $frontendUserId = $request->getHeader('x-typo3-frontend-user')[0];
         $this->sessionBackend->set(
             $this->sessionId,

@@ -84,7 +84,7 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
                     throw new \RuntimeException('Error handler could not fetch error page "' . $resolvedUrl . '", status code: ' . $subResponse->getStatusCode(), 1544172839);
                 }
                 // create new response object and re-use only the body
-                return new HtmlResponse($subResponse->getBody(), $this->statusCode);
+                return new HtmlResponse((string)$subResponse->getBody(), $this->statusCode);
             }
             $content = 'The error page could not be resolved, as the error page itself is not accessible';
         } catch (InvalidRouteArgumentsException | SiteNotFoundException $e) {
